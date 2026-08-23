@@ -1,4 +1,4 @@
-ebvision
+Webvision
 Sistema de gestão e monitoramento web com suporte a controle de dispositivos, alertas do sistema e geração de relatórios.
 
 Equipe
