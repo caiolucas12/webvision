@@ -26,13 +26,11 @@ O projeto apresenta uma interface de monitoramento com dispositivos, endereços 
 
 ```text
 .
-├── DWEB/
-│   ├── index.html
-│   └── style.css
 ├── .vscode/
 │   └── launch.json
+├── index.html
+├── style.css
 └── README.md
-```
 
 ## Como executar
 
