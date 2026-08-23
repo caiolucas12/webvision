@@ -4,136 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>Web Vision - Dashboard de Rede</title>
-
-=======
     <title>WebVision - Dashboard</title>
->>>>>>> 4515b9d (chore: correção de bugs para funcionamento e incrementação de telas e estrutura para apresentação de protótipo)
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<<<<<<< HEAD
-    <div id="dashboard-container" class="dashboard-shell">
-
-        <header class="bg-secondary bg-opacity-10 border-bottom border-secondary p-3 shadow-sm d-flex justify-content-between align-items-center" style="z-index: 1;">
-            <div class="d-flex align-items-center gap-3">
-                <div class="bg-primary bg-opacity-25 text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <span class="brand-mark">WV</span>
-                </div>
-                <div>
-                    <p class="small text-secondary mb-0" style="letter-spacing: 0.2em; font-size: 0.75rem;">WEB VISION</p>
-                    <h1 class="h6 mb-0 fw-semibold">Dashboard de Rede</h1>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center gap-3">
-                <div class="d-none d-sm-flex align-items-center gap-2 bg-dark border border-secondary rounded-pill px-3 py-1 text-secondary" style="font-size: 0.875rem;">
-                    <span class="spinner-grow spinner-grow-sm text-success" role="status" aria-hidden="true"></span>
-                    5 máquinas ativas
-                </div>
-                <span class="header-note">Modo demonstração</span>
-            </div>
-        </header>
-
-        <main class="dashboard-main">
-            <aside class="col-12 col-xl-3 border-end border-secondary bg-dark p-3 overflow-hidden d-flex flex-column h-100">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <div>
-                        <p class="small text-secondary mb-0" style="letter-spacing: 0.2em; font-size: 0.75rem;">DISPOSITIVOS</p>
-                        <h2 class="h6 mb-0 fw-semibold text-white">Rede interna</h2>
-                    </div>
-                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary rounded-pill">Live</span>
-                </div>
-                <div id="machines-grid" class="device-list">
-                    <article class="device-card selected"><div class="device-heading"><span class="device-icon">SV</span><div><h3>Servidor Principal</h3><p>192.168.1.100</p></div><span class="status-dot"></span></div><div class="metric"><span>CPU</span><strong>34.8%</strong></div><div class="meter"><span style="width: 35%;"></span></div><div class="metric"><span>RAM</span><strong>46.2%</strong></div><div class="meter green"><span style="width: 46%;"></span></div></article>
-                    <article class="device-card"><div class="device-heading"><span class="device-icon database">DB</span><div><h3>Banco de Dados</h3><p>192.168.1.101</p></div><span class="status-dot"></span></div><div class="metric"><span>CPU</span><strong>28.4%</strong></div><div class="meter"><span style="width: 28%;"></span></div><div class="metric"><span>RAM</span><strong>67.6%</strong></div><div class="meter green"><span style="width: 68%;"></span></div></article>
-                    <article class="device-card"><div class="device-heading"><span class="device-icon desktop">PC</span><div><h3>PC Laboratório 01</h3><p>192.168.1.55</p></div><span class="status-dot"></span></div><div class="metric"><span>CPU</span><strong>39.9%</strong></div><div class="meter"><span style="width: 40%;"></span></div><div class="metric"><span>RAM</span><strong>45.2%</strong></div><div class="meter green"><span style="width: 45%;"></span></div></article>
-                    <article class="device-card"><div class="device-heading"><span class="device-icon desktop">PC</span><div><h3>PC Laboratório 02</h3><p>192.168.1.56</p></div><span class="status-dot"></span></div><div class="metric"><span>CPU</span><strong>33.5%</strong></div><div class="meter"><span style="width: 34%;"></span></div><div class="metric"><span>RAM</span><strong>51.4%</strong></div><div class="meter green"><span style="width: 51%;"></span></div></article>
-                    <article class="device-card"><div class="device-heading"><span class="device-icon laptop">NB</span><div><h3>Notebook Professor</h3><p>192.168.1.112</p></div><span class="status-dot"></span></div><div class="metric"><span>CPU</span><strong>18.1%</strong></div><div class="meter"><span style="width: 18%;"></span></div><div class="metric"><span>RAM</span><strong>54.2%</strong></div><div class="meter green"><span style="width: 54%;"></span></div></article>
-                </div>
-            </aside>
-
-            <section class="col-12 col-xl-9 p-3 p-md-4 overflow-hidden h-100 d-flex flex-column">
-                <div id="chart-container" class="detail-layout">
-                    <div class="bg-secondary bg-opacity-10 rounded-4 border border-secondary p-3 d-flex flex-column gap-3">
-                        <div class="d-flex align-items-center justify-content-between gap-3">
-                            <div>
-                                <p class="small text-secondary mb-0" style="letter-spacing: 0.2em; font-size: 0.75rem;">MÁQUINA SELECIONADA</p>
-                                <h2 id="selected-machine-name" class="h4 fw-bold text-white mb-0">Servidor Principal</h2>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 small fw-medium">
-                                <span class="spinner-grow spinner-grow-sm text-success" role="status" aria-hidden="true" style="width: 0.5rem; height: 0.5rem;"></span>
-                                Online
-                            </div>
-                        </div>
-
-                        <div class="row g-2">
-                            <div class="col-12 col-md-6">
-                                <div class="bg-dark border border-secondary rounded-3 p-2">
-                                    <p class="small text-secondary mb-1" style="letter-spacing: 0.2em; font-size: 0.75rem;">ENDEREÇO IP</p>
-                                    <p id="detail-ip" class="font-monospace small text-white mb-0">192.168.1.100</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="bg-dark border border-secondary rounded-3 p-2">
-                                    <p class="small text-secondary mb-1" style="letter-spacing: 0.2em; font-size: 0.75rem;">SISTEMA OPERACIONAL</p>
-                                    <p id="detail-os" class="small text-white mb-0">Ubuntu Server 22.04</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 flex-grow-1" style="min-height: 0;">
-                        <div class="col-12 col-xl-6 h-100">
-                            <div class="bg-secondary bg-opacity-10 border border-secondary rounded-4 p-3 h-100 d-flex flex-column">
-                                <div class="flex-grow-1" style="position: relative;">
-                                    <div class="chart chart-blue"><div class="chart-line"></div><div class="chart-grid"></div></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-xl-6 h-100">
-                            <div class="bg-secondary bg-opacity-10 border border-secondary rounded-4 p-3 h-100 d-flex flex-column">
-                                <div class="flex-grow-1" style="position: relative;">
-                                    <div class="chart chart-green"><div class="chart-line"></div><div class="chart-grid"></div></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <details class="architecture-panel">
-        <summary>Arquitetura do projeto</summary>
-        <div class="bg-dark text-white rounded-4 border border-secondary shadow d-flex flex-column" style="max-width: 600px; width: 100%; max-height: 90vh;">
-            <div class="p-3 border-bottom border-secondary d-flex justify-content-between align-items-center bg-secondary bg-opacity-10 rounded-top-4">
-                <h3 class="h5 fw-bold mb-0">Arquitetura do projeto</h3>
-            </div>
-            <div class="p-4 overflow-y-auto" style="color: #cbd5e1;">
-                <p>Este é um protótipo de Frontend criado para a disciplina. Para implementar este projeto no mundo real, a arquitetura recomendada seria:</p>
-
-                <div class="bg-black bg-opacity-50 p-3 rounded-3 border border-secondary mb-3">
-                    <h4 class="text-white fw-semibold mb-2" style="font-size: 0.875rem; letter-spacing: 0.1em;">1. CLIENTE (AGENTE MONITOR)</h4>
-                    <p class="small mb-0">Um script simples rodando em background em cada computador da rede (feito em Python com a biblioteca <code>psutil</code>, por exemplo). Ele captura uso de CPU/RAM a cada 3 segundos e envia para o servidor via protocolo HTTP (POST) ou WebSocket.</p>
-                </div>
-
-                <div class="bg-black bg-opacity-50 p-3 rounded-3 border border-secondary mb-3">
-                    <h4 class="text-white fw-semibold mb-2" style="font-size: 0.875rem; letter-spacing: 0.1em;">2. SERVIDOR (BACKEND)</h4>
-                    <p class="small mb-0">Uma API (pode ser feita em Node.js com Express, ou Python com Flask/FastAPI) rodando em uma máquina central. Ela recebe os dados dos agentes e os guarda temporariamente na memória (ou banco de dados tipo Redis/SQLite).</p>
-                </div>
-
-                <div class="bg-black bg-opacity-50 p-3 rounded-3 border border-secondary">
-                    <h4 class="text-white fw-semibold mb-2" style="font-size: 0.875rem; letter-spacing: 0.1em;">3. DASHBOARD (ESTE FRONTEND)</h4>
-                    <p class="small mb-0">A interface web apresenta uma visão estática dos equipamentos e dos indicadores de uso. Nesta primeira fase, os dados são exemplos fixos para validar a estrutura e a identidade visual do projeto.</p>
-                </div>
-            </div>
-        </div>
-    </details>
-=======
     <div class="app-layout">
         <!-- Sidebar Navigation -->
         <nav class="sidebar" aria-label="Navegação principal">
@@ -358,7 +233,6 @@
             </main>
         </div>
     </div>
->>>>>>> 4515b9d (chore: correção de bugs para funcionamento e incrementação de telas e estrutura para apresentação de protótipo)
 </body>
 
 </html>
