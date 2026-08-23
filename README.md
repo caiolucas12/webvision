@@ -1,23 +1,36 @@
-.
-├── .vscode/
-│   └── launch.json
-├── index.html
-├── style.css
-└── README.md
+ebvision
+Sistema de gestão e monitoramento web com suporte a controle de dispositivos, alertas do sistema e geração de relatórios.
 
-## Como executar
+Equipe
+Caio Lucas - 20251380034 | https://github.com/caiolucas12 | https://www.linkedin.com/in/caio-pinto/
 
-### Opção 1: abrir diretamente
+Guilherme Matias - 20251380012 | https://github.com/Guilherme-Matiass | https://www.linkedin.com/in/guilherm-matias
 
-Abra o arquivo `index.html` em qualquer navegador moderno.
+Gabriel Neres - 20251380035 | https://github.com/GabrielNeres44 | https://www.linkedin.com/in/gabriel-ner
 
-### Opção 2: usar o VS Code
+Documentação & Recursos
+Pitch / Apresentação: [Link dos slides da proposta]
 
-Abra a pasta do projeto no VS Code e execute a configuração **Iniciar o Navegador Integrado no localhost** disponível em `.vscode/launch.json`.
+Protótipos de Interface: Ver pasta de protótipos | Link no Figma
 
-### Opção 3: usar um servidor local
+Documentação do Projeto: Ver pasta de documentação
 
-Na raiz do projeto, execute um servidor HTTP de sua preferência. Por exemplo, com Python:
+Páginas / Telas da Aplicação (GitHub Pages)
+🏠 Índice / Home: https://caiolucas12.github.io/webvision/ (ou index.html)
 
-```bash
-python -m http.server 8080
+⚠️ Alertas: https://caiolucas12.github.io/webvision/alertas.html
+
+⚙️ Configurações: https://caiolucas12.github.io/webvision/configuracoes.html
+
+📱 Dispositivos: https://caiolucas12.github.io/webvision/dispositivos.html
+
+🔑 Autenticação: https://caiolucas12.github.io/webvision/login.html
+
+📋 Relatórios: https://caiolucas12.github.io/webvision/relatorios.html
+
+Funcionalidades Planejadas (Features)
+[x] Interface estática de Dashboard com dados fictícios
+
+[ ] Consumo de API simulada com json-server
+
+[ ] Implementação de servidor em Express.js com Banco de Dado
