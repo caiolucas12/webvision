@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVision - Configurações</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" aria-label="Navegação principal">
+            <div class="sidebar-brand">
+                <span class="brand-mark">WV</span>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-label">WEBVISION</span>
+                    <span class="sidebar-brand-title">Monitoramento</span>
+                </div>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item">
+                    <a href="index.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9632;</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="dispositivos.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9654;</span>
+                        Dispositivos
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="alertas.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9888;</span>
+                        Alertas
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="relatorios.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9776;</span>
+                        Relatórios
+                    </a>
+                </li>
+                <li class="sidebar-nav-item active">
+                    <a href="configuracoes.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9881;</span>
+                        Configurações
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-info">
+                        <span class="sidebar-user-name">Admin</span>
+                        <span class="sidebar-user-role">Administrador</span>
+                    </div>
+                </div>
+                <a href="login.html" class="sidebar-logout">Sair</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1 class="topbar-title">Configurações</h1>
+                    <span class="topbar-subtitle">Ajustes do sistema de monitoramento</span>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="settings-layout">
+                    <!-- Settings Navigation -->
+                    <aside class="settings-sidebar">
+                        <ul class="settings-menu">
+                            <li class="settings-menu-item active">
+                                <a href="#geral">Geral</a>
+                            </li>
+                            <li class="settings-menu-item">
+                                <a href="#rede">Rede</a>
+                            </li>
+                            <li class="settings-menu-item">
+                                <a href="#notificacoes">Notificações</a>
+                            </li>
+                            <li class="settings-menu-item">
+                                <a href="#usuarios">Usuários</a>
+                            </li>
+                            <li class="settings-menu-item">
+                                <a href="#seguranca">Segurança</a>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <!-- Settings Content -->
+                    <div class="settings-content">
+                        <!-- General Settings -->
+                        <section class="settings-section" id="geral">
+                            <h2 class="settings-section-title">Configurações Gerais</h2>
+                            <p class="settings-section-desc">Configurações básicas do sistema de monitoramento.</p>
+
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label class="form-label" for="sys-name">Nome do Sistema</label>
+                                    <input type="text" id="sys-name" class="form-input" value="WebVision Lab">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="refresh-rate">Intervalo de Atualização</label>
+                                    <select id="refresh-rate" class="form-select">
+                                        <option>3 segundos</option>
+                                        <option selected>5 segundos</option>
+                                        <option>10 segundos</option>
+                                        <option>30 segundos</option>
+                                    </select>
+                                    <span class="form-hint">Frequência de coleta de dados dos agentes.</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="timezone">Fuso Horário</label>
+                                    <select id="timezone" class="form-select">
+                                        <option selected>América/São Paulo (UTC-3)</option>
+                                        <option>América/Manaus (UTC-4)</option>
+                                        <option>América/Bahia (UTC-3)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Tema da Interface</label>
+                                    <div class="radio-group">
+                                        <label class="form-radio">
+                                            <input type="radio" name="theme" checked>
+                                            <span>Escuro</span>
+                                        </label>
+                                        <label class="form-radio">
+                                            <input type="radio" name="theme">
+                                            <span>Claro</span>
+                                        </label>
+                                        <label class="form-radio">
+                                            <input type="radio" name="theme">
+                                            <span>Sistema</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Network Settings -->
+                        <section class="settings-section" id="rede">
+                            <h2 class="settings-section-title">Configurações de Rede</h2>
+                            <p class="settings-section-desc">Parâmetros de comunicação com os dispositivos monitorados.</p>
+
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label class="form-label" for="subnet">Sub-rede Monitorada</label>
+                                    <input type="text" id="subnet" class="form-input" value="192.168.1.0/24">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="port">Porta do Agente</label>
+                                    <input type="number" id="port" class="form-input" value="8089">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="timeout">Timeout de Conexão (ms)</label>
+                                    <input type="number" id="timeout" class="form-input" value="5000">
+                                    <span class="form-hint">Tempo máximo de espera por resposta do agente.</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Notification Settings -->
+                        <section class="settings-section" id="notificacoes">
+                            <h2 class="settings-section-title">Notificações</h2>
+                            <p class="settings-section-desc">Configure quando e como receber alertas.</p>
+
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label class="form-label">Alertas por E-mail</label>
+                                    <label class="form-toggle">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                        <span class="toggle-label">Ativado</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="email-dest">E-mail de Destino</label>
+                                    <input type="email" id="email-dest" class="form-input" value="admin@escola.edu.br">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="cpu-threshold">Limite de CPU para Alerta (%)</label>
+                                    <input type="number" id="cpu-threshold" class="form-input" value="80">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="ram-threshold">Limite de RAM para Alerta (%)</label>
+                                    <input type="number" id="ram-threshold" class="form-input" value="85">
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

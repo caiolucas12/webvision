@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVision - Dispositivos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" aria-label="Navegação principal">
+            <div class="sidebar-brand">
+                <span class="brand-mark">WV</span>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-label">WEBVISION</span>
+                    <span class="sidebar-brand-title">Monitoramento</span>
+                </div>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item">
+                    <a href="index.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9632;</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-nav-item active">
+                    <a href="dispositivos.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9654;</span>
+                        Dispositivos
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="alertas.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9888;</span>
+                        Alertas
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="relatorios.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9776;</span>
+                        Relatórios
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="configuracoes.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9881;</span>
+                        Configurações
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-info">
+                        <span class="sidebar-user-name">Admin</span>
+                        <span class="sidebar-user-role">Administrador</span>
+                    </div>
+                </div>
+                <a href="login.html" class="sidebar-logout">Sair</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1 class="topbar-title">Dispositivos</h1>
+                    <span class="topbar-subtitle">Gerenciamento de equipamentos da rede</span>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-primary">+ Adicionar Dispositivo</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Filters -->
+                <section class="filters-bar" aria-label="Filtros">
+                    <div class="filter-group">
+                        <input type="text" class="form-input form-input--search" placeholder="Buscar dispositivo...">
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-select">
+                            <option>Todos os tipos</option>
+                            <option>Servidores</option>
+                            <option>Desktops</option>
+                            <option>Notebooks</option>
+                        </select>
+                        <select class="form-select">
+                            <option>Todos os status</option>
+                            <option>Online</option>
+                            <option>Offline</option>
+                            <option>Manutenção</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Device Table -->
+                <section class="panel" aria-label="Lista de dispositivos">
+                    <div class="panel-body">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Dispositivo</th>
+                                    <th>Endereço IP</th>
+                                    <th>Tipo</th>
+                                    <th>Sistema</th>
+                                    <th>CPU</th>
+                                    <th>RAM</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="td-device">
+                                        <span class="device-icon">SV</span>
+                                        <strong>Servidor Principal</strong>
+                                    </td>
+                                    <td class="font-monospace">192.168.1.100</td>
+                                    <td>Servidor</td>
+                                    <td>Ubuntu Server 22.04</td>
+                                    <td>
+                                        <div class="inline-meter"><span style="width: 35%;"></span></div>
+                                        <span class="small">34.8%</span>
+                                    </td>
+                                    <td>
+                                        <div class="inline-meter inline-meter--green"><span style="width: 46%;"></span></div>
+                                        <span class="small">46.2%</span>
+                                    </td>
+                                    <td><span class="status-pill status-pill--online">Online</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="td-device">
+                                        <span class="device-icon database">DB</span>
+                                        <strong>Banco de Dados</strong>
+                                    </td>
+                                    <td class="font-monospace">192.168.1.101</td>
+                                    <td>Servidor</td>
+                                    <td>Debian 12</td>
+                                    <td>
+                                        <div class="inline-meter"><span style="width: 28%;"></span></div>
+                                        <span class="small">28.4%</span>
+                                    </td>
+                                    <td>
+                                        <div class="inline-meter inline-meter--green"><span style="width: 68%;"></span></div>
+                                        <span class="small">67.6%</span>
+                                    </td>
+                                    <td><span class="status-pill status-pill--online">Online</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="td-device">
+                                        <span class="device-icon desktop">PC</span>
+                                        <strong>PC Laboratório 01</strong>
+                                    </td>
+                                    <td class="font-monospace">192.168.1.55</td>
+                                    <td>Desktop</td>
+                                    <td>Windows 11 Pro</td>
+                                    <td>
+                                        <div class="inline-meter"><span style="width: 40%;"></span></div>
+                                        <span class="small">39.9%</span>
+                                    </td>
+                                    <td>
+                                        <div class="inline-meter inline-meter--green"><span style="width: 45%;"></span></div>
+                                        <span class="small">45.2%</span>
+                                    </td>
+                                    <td><span class="status-pill status-pill--online">Online</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="td-device">
+                                        <span class="device-icon desktop">PC</span>
+                                        <strong>PC Laboratório 02</strong>
+                                    </td>
+                                    <td class="font-monospace">192.168.1.56</td>
+                                    <td>Desktop</td>
+                                    <td>Windows 11 Pro</td>
+                                    <td>
+                                        <div class="inline-meter"><span style="width: 34%;"></span></div>
+                                        <span class="small">33.5%</span>
+                                    </td>
+                                    <td>
+                                        <div class="inline-meter inline-meter--green"><span style="width: 51%;"></span></div>
+                                        <span class="small">51.4%</span>
+                                    </td>
+                                    <td><span class="status-pill status-pill--online">Online</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="td-device">
+                                        <span class="device-icon laptop">NB</span>
+                                        <strong>Notebook Professor</strong>
+                                    </td>
+                                    <td class="font-monospace">192.168.1.112</td>
+                                    <td>Notebook</td>
+                                    <td>macOS Sonoma</td>
+                                    <td>
+                                        <div class="inline-meter"><span style="width: 18%;"></span></div>
+                                        <span class="small">18.1%</span>
+                                    </td>
+                                    <td>
+                                        <div class="inline-meter inline-meter--green"><span style="width: 54%;"></span></div>
+                                        <span class="small">54.2%</span>
+                                    </td>
+                                    <td><span class="status-pill status-pill--online">Online</span></td>
+                                </tr>
+                                <tr class="row-offline">
+                                    <td class="td-device">
+                                        <span class="device-icon desktop">PC</span>
+                                        <strong>PC Secretaria</strong>
+                                    </td>
+                                    <td class="font-monospace">192.168.1.60</td>
+                                    <td>Desktop</td>
+                                    <td>Windows 10</td>
+                                    <td><span class="small text-secondary">—</span></td>
+                                    <td><span class="small text-secondary">—</span></td>
+                                    <td><span class="status-pill status-pill--offline">Offline</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

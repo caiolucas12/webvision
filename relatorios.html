@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVision - Relatórios</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" aria-label="Navegação principal">
+            <div class="sidebar-brand">
+                <span class="brand-mark">WV</span>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-label">WEBVISION</span>
+                    <span class="sidebar-brand-title">Monitoramento</span>
+                </div>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item">
+                    <a href="index.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9632;</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="dispositivos.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9654;</span>
+                        Dispositivos
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="alertas.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9888;</span>
+                        Alertas
+                    </a>
+                </li>
+                <li class="sidebar-nav-item active">
+                    <a href="relatorios.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9776;</span>
+                        Relatórios
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="configuracoes.html" class="sidebar-nav-link">
+                        <span class="nav-icon">&#9881;</span>
+                        Configurações
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-info">
+                        <span class="sidebar-user-name">Admin</span>
+                        <span class="sidebar-user-role">Administrador</span>
+                    </div>
+                </div>
+                <a href="login.html" class="sidebar-logout">Sair</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1 class="topbar-title">Relatórios</h1>
+                    <span class="topbar-subtitle">Histórico e análise de desempenho</span>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-outline">Exportar PDF</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Period Selector -->
+                <section class="filters-bar" aria-label="Seleção de período">
+                    <div class="filter-group">
+                        <div class="period-tabs">
+                            <button class="period-tab">24h</button>
+                            <button class="period-tab active">7 dias</button>
+                            <button class="period-tab">30 dias</button>
+                            <button class="period-tab">90 dias</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-select">
+                            <option>Todos os dispositivos</option>
+                            <option>Servidor Principal</option>
+                            <option>Banco de Dados</option>
+                            <option>PC Laboratório 01</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Charts Grid -->
+                <div class="reports-grid">
+                    <section class="panel" aria-label="Gráfico de CPU">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Uso de CPU (Média)</h2>
+                            <span class="panel-badge">7 dias</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="chart chart-blue">
+                                <div class="chart-line"></div>
+                                <div class="chart-grid"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel" aria-label="Gráfico de RAM">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Uso de RAM (Média)</h2>
+                            <span class="panel-badge">7 dias</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="chart chart-green">
+                                <div class="chart-line"></div>
+                                <div class="chart-grid"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel" aria-label="Gráfico de Rede">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Tráfego de Rede</h2>
+                            <span class="panel-badge">7 dias</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="chart chart-purple">
+                                <div class="chart-line"></div>
+                                <div class="chart-grid"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel" aria-label="Gráfico de Uptime">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Disponibilidade (Uptime)</h2>
+                            <span class="panel-badge">7 dias</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="chart chart-green">
+                                <div class="chart-line" style="top: 10%;"></div>
+                                <div class="chart-grid"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Summary Table -->
+                <section class="panel" aria-label="Resumo do período">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Resumo do Período</h2>
+                    </div>
+                    <div class="panel-body">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Dispositivo</th>
+                                    <th>CPU Média</th>
+                                    <th>CPU Pico</th>
+                                    <th>RAM Média</th>
+                                    <th>Uptime</th>
+                                    <th>Alertas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Servidor Principal</strong></td>
+                                    <td>32.4%</td>
+                                    <td>78.1%</td>
+                                    <td>44.8%</td>
+                                    <td>99.9%</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Banco de Dados</strong></td>
+                                    <td>26.8%</td>
+                                    <td>65.2%</td>
+                                    <td>64.1%</td>
+                                    <td>99.8%</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PC Laboratório 01</strong></td>
+                                    <td>35.7%</td>
+                                    <td>89.3%</td>
+                                    <td>42.6%</td>
+                                    <td>98.2%</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PC Laboratório 02</strong></td>
+                                    <td>30.2%</td>
+                                    <td>55.8%</td>
+                                    <td>48.9%</td>
+                                    <td>99.5%</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Notebook Professor</strong></td>
+                                    <td>15.6%</td>
+                                    <td>42.1%</td>
+                                    <td>51.3%</td>
+                                    <td>95.1%</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>
