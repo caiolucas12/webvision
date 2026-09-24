@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVision - Gerenciador de Dados</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Layout específico do request.html ── */
+        .req-layout {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--bg);
+        }
+
+        /* Topbar simples */
+        .req-topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 32px;
+            height: var(--topbar-height);
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--line);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .req-topbar .brand-mark {
+            background: var(--blue);
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            letter-spacing: 1px;
+        }
+        .req-topbar h1 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .req-topbar .back-link {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 13px;
+            transition: color var(--transition);
+        }
+        .req-topbar .back-link:hover { color: var(--text); }
+
+        /* Tabs */
+        .req-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 20px 32px 0;
+            border-bottom: 1px solid var(--line);
+            background: var(--bg);
+        }
+        .req-tab {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color var(--transition), border-color var(--transition);
+            margin-bottom: -1px;
+        }
+        .req-tab:hover { color: var(--text); }
+        .req-tab.active {
+            color: var(--blue);
+            border-bottom-color: var(--blue);
+        }
+
+        /* Conteúdo das tabs */
+        .req-content {
+            padding: 28px 32px;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* Seções de form */
+        .req-section {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .req-section-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .req-section-desc {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        /* Grid de formulário */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-input, .form-select, .form-textarea {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            color: var(--text);
+            font-size: 13px;
+            transition: border-color var(--transition);
+            outline: none;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--blue);
+        }
+        .form-textarea { resize: vertical; min-height: 72px; }
+
+        /* Botões */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 9px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: opacity var(--transition);
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-primary { background: var(--blue); color: #fff; }
+        .btn-danger  { background: var(--red);  color: #fff; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text);
+        }
+        .btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+
+        /* Toast / feedback */
+        #toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 999;
+        }
+        #toast.show { opacity: 1; pointer-events: auto; }
+        #toast.success { background: var(--green); color: #fff; }
+        #toast.error   { background: var(--red);   color: #fff; }
+
+        /* Tabela de listagem */
+        .list-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .list-table th {
+            text-align: left;
+            padding: 10px 12px;
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--line);
+        }
+        .list-table td {
+            padding: 12px 12px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: middle;
+        }
+        .list-table tr:last-child td { border-bottom: none; }
+        .list-table tr:hover td { background: var(--surface); }
+
+        /* Status pill */
+        .pill {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .pill-online  { background: rgba(34,197,94,.15);  color: var(--green); }
+        .pill-offline { background: rgba(239,68,68,.15);  color: var(--red);   }
+        .pill-critical{ background: rgba(239,68,68,.15);  color: var(--red);   }
+        .pill-warning { background: rgba(245,158,11,.15); color: var(--yellow);}
+        .pill-info    { background: rgba(59,130,246,.15); color: var(--blue);  }
+
+        /* Ações inline */
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            transition: color var(--transition), background var(--transition);
+        }
+        .action-btn:hover { background: var(--surface); color: var(--text); }
+        .action-btn.del:hover { color: var(--red); }
+
+        /* Modal de edição */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            width: 100%;
+            max-width: 560px;
+            transform: translateY(12px);
+            transition: transform 0.2s;
+        }
+        .modal-overlay.open .modal { transform: translateY(0); }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .modal-title { font-size: 15px; font-weight: 600; }
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 20px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-close:hover { color: var(--text); }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Seção de configurações inline */
+        .cfg-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--line);
+            gap: 16px;
+        }
+        .cfg-row:last-child { border-bottom: none; }
+        .cfg-row-label { font-size: 13px; }
+        .cfg-row-desc  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    </style>
+</head>
+
+<body>
+    <div class="req-layout">
+
+        <!-- Topbar -->
+        <header class="req-topbar">
+            <span class="brand-mark">WV</span>
+            <h1>Gerenciador de Dados</h1>
+            <a href="index.html" class="back-link">← Voltar ao Dashboard</a>
+        </header>
+
+        <!-- Tabs -->
+        <nav class="req-tabs" aria-label="Seções">
+            <button class="req-tab active" data-tab="dispositivos">Dispositivos</button>
+            <button class="req-tab" data-tab="alertas">Alertas</button>
+            <button class="req-tab" data-tab="configuracoes">Configurações</button>
+        </nav>
+
+        <!-- Conteúdo -->
+        <div class="req-content">
+
+            <!-- ═══════════════════════════════════════
+                 TAB: DISPOSITIVOS
+            ═══════════════════════════════════════ -->
+            <div id="tab-dispositivos" class="tab-panel active">
+
+                <!-- Adicionar dispositivo -->
+                <div class="req-section">
+                    <h2 class="req-section-title">Adicionar Dispositivo</h2>
+                    <p class="req-section-desc">Preencha os campos e clique em Adicionar para incluir um novo equipamento.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="d-nome">Nome</label>
+                            <input type="text" id="d-nome" class="form-input" placeholder="Ex: PC Sala 02">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="d-ip">Endereço IP</label>
+                            <input type="text" id="d-ip" class="form-input" placeholder="Ex: 192.168.1.70">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="d-tipo">Tipo</label>
+                            <select id="d-tipo" class="form-select">
+                                <option>Desktop</option>
+                                <option>Servidor</option>
+                                <option>Notebook</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="d-sistema">Sistema Operacional</label>
+                            <input type="text" id="d-sistema" class="form-input" placeholder="Ex: Windows 11 Pro">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="d-cpu">CPU (%)</label>
+                            <input type="number" id="d-cpu" class="form-input" min="0" max="100" placeholder="0–100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="d-ram">RAM (%)</label>
+                            <input type="number" id="d-ram" class="form-input" min="0" max="100" placeholder="0–100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="d-status">Status</label>
+                            <select id="d-status" class="form-select">
+                                <option value="online">Online</option>
+                                <option value="offline">Offline</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary" onclick="adicionarDispositivo()">+ Adicionar</button>
+                        <button class="btn btn-outline" onclick="limparFormDispositivo()">Limpar</button>
+                    </div>
+                </div>
+
+                <!-- Lista de dispositivos -->
+                <div class="req-section">
+                    <h2 class="req-section-title">Dispositivos Cadastrados</h2>
+                    <p class="req-section-desc">Clique em Editar para alterar os dados ou em Remover para excluir.</p>
+                    <table class="list-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>IP</th>
+                                <th>Tipo</th>
+                                <th>Sistema</th>
+                                <th>CPU</th>
+                                <th>RAM</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-dispositivos"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════
+                 TAB: ALERTAS
+            ═══════════════════════════════════════ -->
+            <div id="tab-alertas" class="tab-panel">
+
+                <!-- Adicionar alerta -->
+                <div class="req-section">
+                    <h2 class="req-section-title">Adicionar Alerta</h2>
+                    <p class="req-section-desc">Registre um novo evento ou notificação no sistema.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="a-titulo">Título</label>
+                            <input type="text" id="a-titulo" class="form-input" placeholder="Ex: Disco quase cheio">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="a-dispositivo">Dispositivo</label>
+                            <select id="a-dispositivo" class="form-select">
+                                <!-- preenchido via JS -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="a-severidade">Severidade</label>
+                            <select id="a-severidade" class="form-select">
+                                <option value="critical">Crítico</option>
+                                <option value="warning">Aviso</option>
+                                <option value="info" selected>Informativo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="a-horario">Horário</label>
+                            <input type="text" id="a-horario" class="form-input" placeholder="Ex: Hoje, 15:30">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label" for="a-descricao">Descrição</label>
+                            <textarea id="a-descricao" class="form-textarea" placeholder="Detalhes do evento..."></textarea>
+                        </div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary" onclick="adicionarAlerta()">+ Adicionar</button>
+                        <button class="btn btn-outline" onclick="limparFormAlerta()">Limpar</button>
+                    </div>
+                </div>
+
+                <!-- Lista de alertas -->
+                <div class="req-section">
+                    <h2 class="req-section-title">Alertas Registrados</h2>
+                    <p class="req-section-desc">Gerencie todos os alertas do sistema.</p>
+                    <table class="list-table">
+                        <thead>
+                            <tr>
+                                <th>Severidade</th>
+                                <th>Título</th>
+                                <th>Dispositivo</th>
+                                <th>Horário</th>
+                                <th>Ativo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-alertas"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════
+                 TAB: CONFIGURAÇÕES
+            ═══════════════════════════════════════ -->
+            <div id="tab-configuracoes" class="tab-panel">
+                <div class="req-section">
+                    <h2 class="req-section-title">Configurações do Sistema</h2>
+                    <p class="req-section-desc">Edite as configurações gerais, de rede e de notificações diretamente.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-nome">Nome do Sistema</label>
+                            <input type="text" id="cfg-nome" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-intervalo">Intervalo de Atualização</label>
+                            <select id="cfg-intervalo" class="form-select">
+                                <option>3 segundos</option>
+                                <option>5 segundos</option>
+                                <option>10 segundos</option>
+                                <option>30 segundos</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-fuso">Fuso Horário</label>
+                            <select id="cfg-fuso" class="form-select">
+                                <option>América/São Paulo (UTC-3)</option>
+                                <option>América/Manaus (UTC-4)</option>
+                                <option>América/Bahia (UTC-3)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-subrede">Sub-rede Monitorada</label>
+                            <input type="text" id="cfg-subrede" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-porta">Porta do Agente</label>
+                            <input type="number" id="cfg-porta" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-timeout">Timeout (ms)</label>
+                            <input type="number" id="cfg-timeout" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-email">E-mail de Destino</label>
+                            <input type="email" id="cfg-email" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-cpu-limit">Limite CPU (%)</label>
+                            <input type="number" id="cfg-cpu-limit" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cfg-ram-limit">Limite RAM (%)</label>
+                            <input type="number" id="cfg-ram-limit" class="form-input">
+                        </div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary" onclick="salvarConfiguracoes()">Salvar Configurações</button>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /req-content -->
+    </div><!-- /req-layout -->
+
+    <!-- Toast de feedback -->
+    <div id="toast"></div>
+
+    <!-- Modal de edição de dispositivo -->
+    <div id="modal-dispositivo" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Dispositivo</h3>
+                <button class="modal-close" onclick="fecharModal('modal-dispositivo')">&times;</button>
+            </div>
+            <div class="form-grid">
+                <input type="hidden" id="edit-d-id">
+                <div class="form-group">
+                    <label class="form-label">Nome</label>
+                    <input type="text" id="edit-d-nome" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">IP</label>
+                    <input type="text" id="edit-d-ip" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tipo</label>
+                    <select id="edit-d-tipo" class="form-select">
+                        <option>Desktop</option>
+                        <option>Servidor</option>
+                        <option>Notebook</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sistema</label>
+                    <input type="text" id="edit-d-sistema" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">CPU (%)</label>
+                    <input type="number" id="edit-d-cpu" class="form-input" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">RAM (%)</label>
+                    <input type="number" id="edit-d-ram" class="form-input" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="edit-d-status" class="form-select">
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="fecharModal('modal-dispositivo')">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarEdicaoDispositivo()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edição de alerta -->
+    <div id="modal-alerta" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Alerta</h3>
+                <button class="modal-close" onclick="fecharModal('modal-alerta')">&times;</button>
+            </div>
+            <div class="form-grid">
+                <input type="hidden" id="edit-a-id">
+                <div class="form-group">
+                    <label class="form-label">Título</label>
+                    <input type="text" id="edit-a-titulo" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Dispositivo</label>
+                    <input type="text" id="edit-a-dispositivo" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Severidade</label>
+                    <select id="edit-a-severidade" class="form-select">
+                        <option value="critical">Crítico</option>
+                        <option value="warning">Aviso</option>
+                        <option value="info">Informativo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Horário</label>
+                    <input type="text" id="edit-a-horario" class="form-input">
+                </div>
+                <div class="form-group full-width">
+                    <label class="form-label">Descrição</label>
+                    <textarea id="edit-a-descricao" class="form-textarea"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="fecharModal('modal-alerta')">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarEdicaoAlerta()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:3000';
+
+        /* ── Utilidades ── */
+        function toast(msg, tipo = 'success') {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.className = `show ${tipo}`;
+            clearTimeout(el._t);
+            el._t = setTimeout(() => el.className = '', 3000);
+        }
+
+        function abrirModal(id) {
+            document.getElementById(id).classList.add('open');
+        }
+        function fecharModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        function setSelectValue(sel, valor) {
+            [...sel.options].forEach((o, i) => {
+                if (o.value === valor || o.text === valor) sel.selectedIndex = i;
+            });
+        }
+
+        const LABEL_SEV = { critical: 'Crítico', warning: 'Aviso', info: 'Info' };
+        const ICONE_TIPO = { Desktop: 'PC', Servidor: 'SV', Notebook: 'NB' };
+
+        /* ── Tabs ── */
+        document.querySelectorAll('.req-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.req-tab').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+            });
+        });
+
+        /* ════════════════════════════════════════
+           DISPOSITIVOS
+        ════════════════════════════════════════ */
+        async function carregarDispositivos() {
+            const res = await fetch(`${API}/dispositivos`);
+            const lista = await res.json();
+            const tbody = document.getElementById('lista-dispositivos');
+            tbody.innerHTML = '';
+
+            // Popula o select de dispositivos nos alertas
+            const selDisp = document.getElementById('a-dispositivo');
+            selDisp.innerHTML = '';
+            lista.forEach(d => {
+                const opt = document.createElement('option');
+                opt.textContent = d.nome;
+                selDisp.appendChild(opt);
+            });
+
+            lista.forEach(d => {
+                const pillClass = d.status === 'online' ? 'pill-online' : 'pill-offline';
+                const statusLabel = d.status === 'online' ? 'Online' : 'Offline';
+                const cpu = d.cpu !== null ? `${d.cpu}%` : '—';
+                const ram = d.ram !== null ? `${d.ram}%` : '—';
+                tbody.innerHTML += `
+                <tr>
+                    <td><strong>${d.nome}</strong></td>
+                    <td style="font-family:monospace">${d.ip}</td>
+                    <td>${d.tipo}</td>
+                    <td>${d.sistema}</td>
+                    <td>${cpu}</td>
+                    <td>${ram}</td>
+                    <td><span class="pill ${pillClass}">${statusLabel}</span></td>
+                    <td>
+                        <button class="action-btn" onclick="abrirEdicaoDispositivo(${d.id})">✏ Editar</button>
+                        <button class="action-btn del" onclick="removerDispositivo(${d.id})">✕ Remover</button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        async function adicionarDispositivo() {
+            const nome    = document.getElementById('d-nome').value.trim();
+            const ip      = document.getElementById('d-ip').value.trim();
+            const tipo    = document.getElementById('d-tipo').value;
+            const sistema = document.getElementById('d-sistema').value.trim();
+            const cpu     = parseFloat(document.getElementById('d-cpu').value) || null;
+            const ram     = parseFloat(document.getElementById('d-ram').value) || null;
+            const status  = document.getElementById('d-status').value;
+
+            if (!nome || !ip || !sistema) {
+                toast('Preencha Nome, IP e Sistema.', 'error'); return;
+            }
+
+            const tipoIcone = tipo === 'Servidor' ? 'servidor'
+                            : tipo === 'Notebook' ? 'laptop' : 'desktop';
+
+            const res = await fetch(`${API}/dispositivos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    icone: ICONE_TIPO[tipo] || 'PC',
+                    tipo_icone: tipoIcone,
+                    nome, ip, tipo, sistema, cpu, ram, status
+                })
+            });
+
+            if (res.ok) {
+                toast('Dispositivo adicionado!');
+                limparFormDispositivo();
+                carregarDispositivos();
+            } else {
+                toast('Erro ao adicionar.', 'error');
+            }
+        }
+
+        async function removerDispositivo(id) {
+            if (!confirm('Remover este dispositivo?')) return;
+            const res = await fetch(`${API}/dispositivos/${id}`, { method: 'DELETE' });
+            if (res.ok) { toast('Dispositivo removido.'); carregarDispositivos(); }
+            else toast('Erro ao remover.', 'error');
+        }
+
+        async function abrirEdicaoDispositivo(id) {
+            const res = await fetch(`${API}/dispositivos/${id}`);
+            const d = await res.json();
+            document.getElementById('edit-d-id').value     = d.id;
+            document.getElementById('edit-d-nome').value   = d.nome;
+            document.getElementById('edit-d-ip').value     = d.ip;
+            document.getElementById('edit-d-sistema').value = d.sistema;
+            document.getElementById('edit-d-cpu').value    = d.cpu ?? '';
+            document.getElementById('edit-d-ram').value    = d.ram ?? '';
+            setSelectValue(document.getElementById('edit-d-tipo'), d.tipo);
+            setSelectValue(document.getElementById('edit-d-status'), d.status);
+            abrirModal('modal-dispositivo');
+        }
+
+        async function salvarEdicaoDispositivo() {
+            const id      = document.getElementById('edit-d-id').value;
+            const tipo    = document.getElementById('edit-d-tipo').value;
+            const tipoIcone = tipo === 'Servidor' ? 'servidor'
+                            : tipo === 'Notebook' ? 'laptop' : 'desktop';
+            const body = {
+                nome:      document.getElementById('edit-d-nome').value.trim(),
+                ip:        document.getElementById('edit-d-ip').value.trim(),
+                tipo,
+                tipo_icone: tipoIcone,
+                icone:     ICONE_TIPO[tipo] || 'PC',
+                sistema:   document.getElementById('edit-d-sistema').value.trim(),
+                cpu:       parseFloat(document.getElementById('edit-d-cpu').value) || null,
+                ram:       parseFloat(document.getElementById('edit-d-ram').value) || null,
+                status:    document.getElementById('edit-d-status').value
+            };
+            const res = await fetch(`${API}/dispositivos/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (res.ok) {
+                toast('Dispositivo atualizado!');
+                fecharModal('modal-dispositivo');
+                carregarDispositivos();
+            } else {
+                toast('Erro ao salvar.', 'error');
+            }
+        }
+
+        function limparFormDispositivo() {
+            ['d-nome','d-ip','d-sistema','d-cpu','d-ram'].forEach(id =>
+                document.getElementById(id).value = '');
+            document.getElementById('d-tipo').selectedIndex = 0;
+            document.getElementById('d-status').selectedIndex = 0;
+        }
+
+        /* ════════════════════════════════════════
+           ALERTAS
+        ════════════════════════════════════════ */
+        async function carregarAlertas() {
+            const res = await fetch(`${API}/alertas`);
+            const lista = await res.json();
+            const tbody = document.getElementById('lista-alertas');
+            tbody.innerHTML = '';
+            lista.forEach(a => {
+                const pillClass = `pill-${a.severidade}`;
+                tbody.innerHTML += `
+                <tr>
+                    <td><span class="pill ${pillClass}">${a.severidade_label}</span></td>
+                    <td><strong>${a.titulo}</strong></td>
+                    <td>${a.dispositivo}</td>
+                    <td>${a.horario}</td>
+                    <td>${a.ativo ? '✔ Ativo' : '—'}</td>
+                    <td>
+                        <button class="action-btn" onclick="abrirEdicaoAlerta(${a.id})">✏ Editar</button>
+                        <button class="action-btn del" onclick="removerAlerta(${a.id})">✕ Remover</button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        async function adicionarAlerta() {
+            const titulo      = document.getElementById('a-titulo').value.trim();
+            const dispositivo = document.getElementById('a-dispositivo').value;
+            const severidade  = document.getElementById('a-severidade').value;
+            const horario     = document.getElementById('a-horario').value.trim() || 'Agora';
+            const descricao   = document.getElementById('a-descricao').value.trim();
+
+            if (!titulo || !descricao) {
+                toast('Preencha Título e Descrição.', 'error'); return;
+            }
+
+            const labelMap = { critical: 'Crítico', warning: 'Aviso', info: 'Info' };
+            const res = await fetch(`${API}/alertas`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    severidade,
+                    severidade_label: labelMap[severidade],
+                    titulo, dispositivo, horario, descricao,
+                    ativo: severidade !== 'info'
+                })
+            });
+
+            if (res.ok) {
+                toast('Alerta adicionado!');
+                limparFormAlerta();
+                carregarAlertas();
+            } else {
+                toast('Erro ao adicionar.', 'error');
+            }
+        }
+
+        async function removerAlerta(id) {
+            if (!confirm('Remover este alerta?')) return;
+            const res = await fetch(`${API}/alertas/${id}`, { method: 'DELETE' });
+            if (res.ok) { toast('Alerta removido.'); carregarAlertas(); }
+            else toast('Erro ao remover.', 'error');
+        }
+
+        async function abrirEdicaoAlerta(id) {
+            const res = await fetch(`${API}/alertas/${id}`);
+            const a = await res.json();
+            document.getElementById('edit-a-id').value          = a.id;
+            document.getElementById('edit-a-titulo').value      = a.titulo;
+            document.getElementById('edit-a-dispositivo').value = a.dispositivo;
+            document.getElementById('edit-a-horario').value     = a.horario;
+            document.getElementById('edit-a-descricao').value   = a.descricao;
+            setSelectValue(document.getElementById('edit-a-severidade'), a.severidade);
+            abrirModal('modal-alerta');
+        }
+
+        async function salvarEdicaoAlerta() {
+            const id        = document.getElementById('edit-a-id').value;
+            const severidade = document.getElementById('edit-a-severidade').value;
+            const labelMap  = { critical: 'Crítico', warning: 'Aviso', info: 'Info' };
+            const body = {
+                titulo:           document.getElementById('edit-a-titulo').value.trim(),
+                dispositivo:      document.getElementById('edit-a-dispositivo').value.trim(),
+                severidade,
+                severidade_label: labelMap[severidade],
+                horario:          document.getElementById('edit-a-horario').value.trim(),
+                descricao:        document.getElementById('edit-a-descricao').value.trim()
+            };
+            const res = await fetch(`${API}/alertas/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (res.ok) {
+                toast('Alerta atualizado!');
+                fecharModal('modal-alerta');
+                carregarAlertas();
+            } else {
+                toast('Erro ao salvar.', 'error');
+            }
+        }
+
+        function limparFormAlerta() {
+            ['a-titulo','a-horario','a-descricao'].forEach(id =>
+                document.getElementById(id).value = '');
+            document.getElementById('a-severidade').selectedIndex = 2;
+        }
+
+        /* ════════════════════════════════════════
+           CONFIGURAÇÕES
+        ════════════════════════════════════════ */
+        async function carregarConfiguracoes() {
+            const res = await fetch(`${API}/sistema`);
+            const s = await res.json();
+            document.getElementById('cfg-nome').value       = s.nome;
+            document.getElementById('cfg-subrede').value    = s.subrede;
+            document.getElementById('cfg-porta').value      = s.portaAgente;
+            document.getElementById('cfg-timeout').value    = s.timeoutConexao;
+            document.getElementById('cfg-email').value      = s.emailDestino;
+            document.getElementById('cfg-cpu-limit').value  = s.limiteCPU;
+            document.getElementById('cfg-ram-limit').value  = s.limiteRAM;
+            setSelectValue(document.getElementById('cfg-intervalo'), s.intervaloAtualizacao);
+            setSelectValue(document.getElementById('cfg-fuso'), s.fusoHorario);
+        }
+
+        async function salvarConfiguracoes() {
+            const body = {
+                nome:                 document.getElementById('cfg-nome').value.trim(),
+                intervaloAtualizacao: document.getElementById('cfg-intervalo').value,
+                fusoHorario:          document.getElementById('cfg-fuso').value,
+                subrede:              document.getElementById('cfg-subrede').value.trim(),
+                portaAgente:          parseInt(document.getElementById('cfg-porta').value),
+                timeoutConexao:       parseInt(document.getElementById('cfg-timeout').value),
+                emailDestino:         document.getElementById('cfg-email').value.trim(),
+                limiteCPU:            parseInt(document.getElementById('cfg-cpu-limit').value),
+                limiteRAM:            parseInt(document.getElementById('cfg-ram-limit').value)
+            };
+            const res = await fetch(`${API}/sistema`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (res.ok) toast('Configurações salvas!');
+            else toast('Erro ao salvar.', 'error');
+        }
+
+        /* ── Inicialização ── */
+        async function init() {
+            try {
+                await Promise.all([
+                    carregarDispositivos(),
+                    carregarAlertas(),
+                    carregarConfiguracoes()
+                ]);
+            } catch (e) {
+                toast('Servidor não encontrado. Rode: npx json-server db.json', 'error');
+                console.error(e);
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
