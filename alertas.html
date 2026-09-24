@@ -55,10 +55,10 @@
 
             <div class="sidebar-footer">
                 <div class="sidebar-user">
-                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-avatar" id="user-iniciais"></div>
                     <div class="sidebar-user-info">
-                        <span class="sidebar-user-name">Admin</span>
-                        <span class="sidebar-user-role">Administrador</span>
+                        <span class="sidebar-user-name" id="user-nome"></span>
+                        <span class="sidebar-user-role" id="user-papel"></span>
                     </div>
                 </div>
                 <a href="login.html" class="sidebar-logout">Sair</a>
@@ -75,7 +75,7 @@
                 <div class="topbar-right">
                     <span class="status-badge status-badge--warning">
                         <span class="status-badge-dot status-badge-dot--warning"></span>
-                        2 alertas ativos
+                        <span id="badge-alertas-ativos"></span>
                     </span>
                 </div>
             </header>
@@ -87,21 +87,21 @@
                         <div class="kpi-icon kpi-icon--red">!</div>
                         <div class="kpi-body">
                             <span class="kpi-label">Críticos</span>
-                            <strong class="kpi-value">1</strong>
+                            <strong class="kpi-value" id="contador-critico"></strong>
                         </div>
                     </div>
                     <div class="kpi-card kpi-card--border-yellow">
                         <div class="kpi-icon kpi-icon--yellow">&#9888;</div>
                         <div class="kpi-body">
                             <span class="kpi-label">Avisos</span>
-                            <strong class="kpi-value">1</strong>
+                            <strong class="kpi-value" id="contador-warning"></strong>
                         </div>
                     </div>
                     <div class="kpi-card kpi-card--border-blue">
                         <div class="kpi-icon kpi-icon--blue">i</div>
                         <div class="kpi-body">
                             <span class="kpi-label">Informativos</span>
-                            <strong class="kpi-value">5</strong>
+                            <strong class="kpi-value" id="contador-info"></strong>
                         </div>
                     </div>
                 </section>
@@ -118,13 +118,9 @@
                             <option>Aviso</option>
                             <option>Informativo</option>
                         </select>
-                        <select class="form-select">
+                        <select id="filtro-dispositivo" class="form-select">
                             <option>Todos os dispositivos</option>
-                            <option>Servidor Principal</option>
-                            <option>Banco de Dados</option>
-                            <option>PC Laboratório 01</option>
-                            <option>PC Laboratório 02</option>
-                            <option>Notebook Professor</option>
+                            <!-- preenchido via JS -->
                         </select>
                     </div>
                 </section>
@@ -132,87 +128,75 @@
                 <!-- Alert List -->
                 <section class="panel" aria-label="Lista de alertas">
                     <div class="panel-body">
-                        <div class="alert-list">
-                            <article class="alert-item alert-item--critical">
-                                <div class="alert-item-icon">!</div>
-                                <div class="alert-item-body">
-                                    <div class="alert-item-header">
-                                        <h3 class="alert-item-title">Temperatura elevada detectada</h3>
-                                        <time class="alert-item-time">Hoje, 13:47</time>
-                                    </div>
-                                    <p class="alert-item-desc">PC Laboratório 01 atingiu 82°C. Verificar ventilação do equipamento.</p>
-                                    <div class="alert-item-meta">
-                                        <span class="alert-item-device">PC Laboratório 01</span>
-                                        <span class="severity severity--critical">Crítico</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="alert-item alert-item--warning">
-                                <div class="alert-item-icon">&#9888;</div>
-                                <div class="alert-item-body">
-                                    <div class="alert-item-header">
-                                        <h3 class="alert-item-title">Uso de RAM acima de 65%</h3>
-                                        <time class="alert-item-time">Hoje, 14:32</time>
-                                    </div>
-                                    <p class="alert-item-desc">O servidor de banco de dados está com uso de memória elevado (67.6%).</p>
-                                    <div class="alert-item-meta">
-                                        <span class="alert-item-device">Banco de Dados</span>
-                                        <span class="severity severity--warning">Aviso</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="alert-item alert-item--info">
-                                <div class="alert-item-icon">i</div>
-                                <div class="alert-item-body">
-                                    <div class="alert-item-header">
-                                        <h3 class="alert-item-title">Backup automático concluído</h3>
-                                        <time class="alert-item-time">Hoje, 12:00</time>
-                                    </div>
-                                    <p class="alert-item-desc">Backup completo do Servidor Principal finalizado com sucesso.</p>
-                                    <div class="alert-item-meta">
-                                        <span class="alert-item-device">Servidor Principal</span>
-                                        <span class="severity severity--info">Info</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="alert-item alert-item--info">
-                                <div class="alert-item-icon">i</div>
-                                <div class="alert-item-body">
-                                    <div class="alert-item-header">
-                                        <h3 class="alert-item-title">Atualização de sistema disponível</h3>
-                                        <time class="alert-item-time">Ontem, 09:15</time>
-                                    </div>
-                                    <p class="alert-item-desc">Pacotes de segurança pendentes em 2 dispositivos.</p>
-                                    <div class="alert-item-meta">
-                                        <span class="alert-item-device">Múltiplos</span>
-                                        <span class="severity severity--info">Info</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="alert-item alert-item--info">
-                                <div class="alert-item-icon">i</div>
-                                <div class="alert-item-body">
-                                    <div class="alert-item-header">
-                                        <h3 class="alert-item-title">Novo dispositivo conectado</h3>
-                                        <time class="alert-item-time">Ontem, 08:22</time>
-                                    </div>
-                                    <p class="alert-item-desc">Notebook Professor (192.168.1.112) foi detectado na rede.</p>
-                                    <div class="alert-item-meta">
-                                        <span class="alert-item-device">Notebook Professor</span>
-                                        <span class="severity severity--info">Info</span>
-                                    </div>
-                                </div>
-                            </article>
+                        <div class="alert-list" id="alert-list">
+                            <!-- preenchido via JS -->
                         </div>
                     </div>
                 </section>
             </main>
         </div>
     </div>
+
+    <script>
+        const ICONE_SEVERIDADE = {
+            critical: '!',
+            warning: '&#9888;',
+            info: 'i'
+        };
+
+        async function carregarDados() {
+            const res = await fetch('db.json');
+            const db = await res.json();
+
+            // Usuário
+            document.getElementById('user-iniciais').textContent = db.usuario.iniciais;
+            document.getElementById('user-nome').textContent = db.usuario.nome;
+            document.getElementById('user-papel').textContent = db.usuario.papel;
+
+            // Contadores
+            const ativos = db.alertas.filter(a => a.ativo).length;
+            document.getElementById('badge-alertas-ativos').textContent =
+                `${ativos} alerta${ativos !== 1 ? 's' : ''} ativo${ativos !== 1 ? 's' : ''}`;
+
+            document.getElementById('contador-critico').textContent =
+                db.alertas.filter(a => a.severidade === 'critical').length;
+            document.getElementById('contador-warning').textContent =
+                db.alertas.filter(a => a.severidade === 'warning').length;
+            document.getElementById('contador-info').textContent =
+                db.alertas.filter(a => a.severidade === 'info').length;
+
+            // Filtro de dispositivos
+            const filtroDisp = document.getElementById('filtro-dispositivo');
+            const dispositivos = [...new Set(db.alertas.map(a => a.dispositivo))];
+            dispositivos.forEach(nome => {
+                const opt = document.createElement('option');
+                opt.textContent = nome;
+                filtroDisp.appendChild(opt);
+            });
+
+            // Lista de alertas
+            const alertList = document.getElementById('alert-list');
+            db.alertas.forEach(a => {
+                alertList.innerHTML += `
+                <article class="alert-item alert-item--${a.severidade}">
+                    <div class="alert-item-icon">${ICONE_SEVERIDADE[a.severidade]}</div>
+                    <div class="alert-item-body">
+                        <div class="alert-item-header">
+                            <h3 class="alert-item-title">${a.titulo}</h3>
+                            <time class="alert-item-time">${a.horario}</time>
+                        </div>
+                        <p class="alert-item-desc">${a.descricao}</p>
+                        <div class="alert-item-meta">
+                            <span class="alert-item-device">${a.dispositivo}</span>
+                            <span class="severity severity--${a.severidade}">${a.severidade_label}</span>
+                        </div>
+                    </div>
+                </article>`;
+            });
+        }
+
+        carregarDados();
+    </script>
 </body>
 
 </html>

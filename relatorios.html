@@ -55,10 +55,10 @@
 
             <div class="sidebar-footer">
                 <div class="sidebar-user">
-                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-avatar" id="user-iniciais"></div>
                     <div class="sidebar-user-info">
-                        <span class="sidebar-user-name">Admin</span>
-                        <span class="sidebar-user-role">Administrador</span>
+                        <span class="sidebar-user-name" id="user-nome"></span>
+                        <span class="sidebar-user-role" id="user-papel"></span>
                     </div>
                 </div>
                 <a href="login.html" class="sidebar-logout">Sair</a>
@@ -89,11 +89,9 @@
                         </div>
                     </div>
                     <div class="filter-group">
-                        <select class="form-select">
+                        <select id="filtro-dispositivo" class="form-select">
                             <option>Todos os dispositivos</option>
-                            <option>Servidor Principal</option>
-                            <option>Banco de Dados</option>
-                            <option>PC Laboratório 01</option>
+                            <!-- preenchido via JS -->
                         </select>
                     </div>
                 </section>
@@ -170,47 +168,8 @@
                                     <th>Alertas</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Servidor Principal</strong></td>
-                                    <td>32.4%</td>
-                                    <td>78.1%</td>
-                                    <td>44.8%</td>
-                                    <td>99.9%</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Banco de Dados</strong></td>
-                                    <td>26.8%</td>
-                                    <td>65.2%</td>
-                                    <td>64.1%</td>
-                                    <td>99.8%</td>
-                                    <td>3</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>PC Laboratório 01</strong></td>
-                                    <td>35.7%</td>
-                                    <td>89.3%</td>
-                                    <td>42.6%</td>
-                                    <td>98.2%</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>PC Laboratório 02</strong></td>
-                                    <td>30.2%</td>
-                                    <td>55.8%</td>
-                                    <td>48.9%</td>
-                                    <td>99.5%</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Notebook Professor</strong></td>
-                                    <td>15.6%</td>
-                                    <td>42.1%</td>
-                                    <td>51.3%</td>
-                                    <td>95.1%</td>
-                                    <td>1</td>
-                                </tr>
+                            <tbody id="tabela-relatorio">
+                                <!-- preenchido via JS -->
                             </tbody>
                         </table>
                     </div>
@@ -218,6 +177,42 @@
             </main>
         </div>
     </div>
+
+    <script>
+        async function carregarDados() {
+            const res = await fetch('db.json');
+            const db = await res.json();
+
+            // Usuário
+            document.getElementById('user-iniciais').textContent = db.usuario.iniciais;
+            document.getElementById('user-nome').textContent = db.usuario.nome;
+            document.getElementById('user-papel').textContent = db.usuario.papel;
+
+            // Filtro de dispositivos
+            const filtro = document.getElementById('filtro-dispositivo');
+            db.relatorios.forEach(r => {
+                const opt = document.createElement('option');
+                opt.textContent = r.dispositivo;
+                filtro.appendChild(opt);
+            });
+
+            // Tabela de resumo
+            const tbody = document.getElementById('tabela-relatorio');
+            db.relatorios.forEach(r => {
+                tbody.innerHTML += `
+                <tr>
+                    <td><strong>${r.dispositivo}</strong></td>
+                    <td>${r.cpuMedia}</td>
+                    <td>${r.cpuPico}</td>
+                    <td>${r.ramMedia}</td>
+                    <td>${r.uptime}</td>
+                    <td>${r.alertas}</td>
+                </tr>`;
+            });
+        }
+
+        carregarDados();
+    </script>
 </body>
 
 </html>

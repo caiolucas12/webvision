@@ -1,0 +1,195 @@
+{
+  "usuario": {
+    "nome": "Admin",
+    "papel": "Administrador",
+    "iniciais": "AD"
+  },
+  "sistema": {
+    "nome": "WebVision Lab",
+    "intervaloAtualizacao": "5 segundos",
+    "fusoHorario": "América/São Paulo (UTC-3)",
+    "tema": "Escuro",
+    "subrede": "192.168.1.0/24",
+    "portaAgente": 8089,
+    "timeoutConexao": 5000,
+    "alertasEmail": true,
+    "emailDestino": "admin@escola.edu.br",
+    "limiteCPU": 80,
+    "limiteRAM": 85
+  },
+  "kpis": {
+    "dispositivosOnline": 5,
+    "dispositivosTotal": 5,
+    "uptimeMedio": "99.7%",
+    "alertasAtivos": 2,
+    "latenciaMedia": "12ms"
+  },
+  "dispositivos": [
+    {
+      "id": 1,
+      "icone": "SV",
+      "tipo_icone": "servidor",
+      "nome": "Servidor Principal",
+      "ip": "192.168.1.100",
+      "tipo": "Servidor",
+      "sistema": "Ubuntu Server 22.04",
+      "cpu": 34.8,
+      "ram": 46.2,
+      "status": "online"
+    },
+    {
+      "id": 2,
+      "icone": "DB",
+      "tipo_icone": "database",
+      "nome": "Banco de Dados",
+      "ip": "192.168.1.101",
+      "tipo": "Servidor",
+      "sistema": "Debian 12",
+      "cpu": 28.4,
+      "ram": 67.6,
+      "status": "online"
+    },
+    {
+      "id": 3,
+      "icone": "PC",
+      "tipo_icone": "desktop",
+      "nome": "PC Laboratório 01",
+      "ip": "192.168.1.55",
+      "tipo": "Desktop",
+      "sistema": "Windows 11 Pro",
+      "cpu": 39.9,
+      "ram": 45.2,
+      "status": "online"
+    },
+    {
+      "id": 4,
+      "icone": "PC",
+      "tipo_icone": "desktop",
+      "nome": "PC Laboratório 02",
+      "ip": "192.168.1.56",
+      "tipo": "Desktop",
+      "sistema": "Windows 11 Pro",
+      "cpu": 33.5,
+      "ram": 51.4,
+      "status": "online"
+    },
+    {
+      "id": 5,
+      "icone": "NB",
+      "tipo_icone": "laptop",
+      "nome": "Notebook Professor",
+      "ip": "192.168.1.112",
+      "tipo": "Notebook",
+      "sistema": "macOS Sonoma",
+      "cpu": 18.1,
+      "ram": 54.2,
+      "status": "online"
+    },
+    {
+      "id": 6,
+      "icone": "PC",
+      "tipo_icone": "desktop",
+      "nome": "PC Secretaria",
+      "ip": "192.168.1.60",
+      "tipo": "Desktop",
+      "sistema": "Windows 10",
+      "cpu": null,
+      "ram": null,
+      "status": "offline"
+    }
+  ],
+  "alertas": [
+    {
+      "id": 1,
+      "severidade": "critical",
+      "severidade_label": "Crítico",
+      "titulo": "Temperatura elevada detectada",
+      "descricao": "PC Laboratório 01 atingiu 82°C. Verificar ventilação do equipamento.",
+      "dispositivo": "PC Laboratório 01",
+      "horario": "Hoje, 13:47",
+      "ativo": true
+    },
+    {
+      "id": 2,
+      "severidade": "warning",
+      "severidade_label": "Aviso",
+      "titulo": "Uso de RAM acima de 65%",
+      "descricao": "O servidor de banco de dados está com uso de memória elevado (67.6%).",
+      "dispositivo": "Banco de Dados",
+      "horario": "Hoje, 14:32",
+      "ativo": true
+    },
+    {
+      "id": 3,
+      "severidade": "info",
+      "severidade_label": "Info",
+      "titulo": "Backup automático concluído",
+      "descricao": "Backup completo do Servidor Principal finalizado com sucesso.",
+      "dispositivo": "Servidor Principal",
+      "horario": "Hoje, 12:00",
+      "ativo": false
+    },
+    {
+      "id": 4,
+      "severidade": "info",
+      "severidade_label": "Info",
+      "titulo": "Atualização de sistema disponível",
+      "descricao": "Pacotes de segurança pendentes em 2 dispositivos.",
+      "dispositivo": "Múltiplos",
+      "horario": "Ontem, 09:15",
+      "ativo": false
+    },
+    {
+      "id": 5,
+      "severidade": "info",
+      "severidade_label": "Info",
+      "titulo": "Novo dispositivo conectado",
+      "descricao": "Notebook Professor (192.168.1.112) foi detectado na rede.",
+      "dispositivo": "Notebook Professor",
+      "horario": "Ontem, 08:22",
+      "ativo": false
+    }
+  ],
+  "relatorios": [
+    {
+      "dispositivo": "Servidor Principal",
+      "cpuMedia": "32.4%",
+      "cpuPico": "78.1%",
+      "ramMedia": "44.8%",
+      "uptime": "99.9%",
+      "alertas": 1
+    },
+    {
+      "dispositivo": "Banco de Dados",
+      "cpuMedia": "26.8%",
+      "cpuPico": "65.2%",
+      "ramMedia": "64.1%",
+      "uptime": "99.8%",
+      "alertas": 3
+    },
+    {
+      "dispositivo": "PC Laboratório 01",
+      "cpuMedia": "35.7%",
+      "cpuPico": "89.3%",
+      "ramMedia": "42.6%",
+      "uptime": "98.2%",
+      "alertas": 2
+    },
+    {
+      "dispositivo": "PC Laboratório 02",
+      "cpuMedia": "30.2%",
+      "cpuPico": "55.8%",
+      "ramMedia": "48.9%",
+      "uptime": "99.5%",
+      "alertas": 0
+    },
+    {
+      "dispositivo": "Notebook Professor",
+      "cpuMedia": "15.6%",
+      "cpuPico": "42.1%",
+      "ramMedia": "51.3%",
+      "uptime": "95.1%",
+      "alertas": 1
+    }
+  ]
+}

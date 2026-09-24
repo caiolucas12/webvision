@@ -55,10 +55,10 @@
 
             <div class="sidebar-footer">
                 <div class="sidebar-user">
-                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-avatar" id="user-iniciais"></div>
                     <div class="sidebar-user-info">
-                        <span class="sidebar-user-name">Admin</span>
-                        <span class="sidebar-user-role">Administrador</span>
+                        <span class="sidebar-user-name" id="user-nome"></span>
+                        <span class="sidebar-user-role" id="user-papel"></span>
                     </div>
                 </div>
                 <a href="login.html" class="sidebar-logout">Sair</a>
@@ -114,109 +114,8 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="td-device">
-                                        <span class="device-icon">SV</span>
-                                        <strong>Servidor Principal</strong>
-                                    </td>
-                                    <td class="font-monospace">192.168.1.100</td>
-                                    <td>Servidor</td>
-                                    <td>Ubuntu Server 22.04</td>
-                                    <td>
-                                        <div class="inline-meter"><span style="width: 35%;"></span></div>
-                                        <span class="small">34.8%</span>
-                                    </td>
-                                    <td>
-                                        <div class="inline-meter inline-meter--green"><span style="width: 46%;"></span></div>
-                                        <span class="small">46.2%</span>
-                                    </td>
-                                    <td><span class="status-pill status-pill--online">Online</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="td-device">
-                                        <span class="device-icon database">DB</span>
-                                        <strong>Banco de Dados</strong>
-                                    </td>
-                                    <td class="font-monospace">192.168.1.101</td>
-                                    <td>Servidor</td>
-                                    <td>Debian 12</td>
-                                    <td>
-                                        <div class="inline-meter"><span style="width: 28%;"></span></div>
-                                        <span class="small">28.4%</span>
-                                    </td>
-                                    <td>
-                                        <div class="inline-meter inline-meter--green"><span style="width: 68%;"></span></div>
-                                        <span class="small">67.6%</span>
-                                    </td>
-                                    <td><span class="status-pill status-pill--online">Online</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="td-device">
-                                        <span class="device-icon desktop">PC</span>
-                                        <strong>PC Laboratório 01</strong>
-                                    </td>
-                                    <td class="font-monospace">192.168.1.55</td>
-                                    <td>Desktop</td>
-                                    <td>Windows 11 Pro</td>
-                                    <td>
-                                        <div class="inline-meter"><span style="width: 40%;"></span></div>
-                                        <span class="small">39.9%</span>
-                                    </td>
-                                    <td>
-                                        <div class="inline-meter inline-meter--green"><span style="width: 45%;"></span></div>
-                                        <span class="small">45.2%</span>
-                                    </td>
-                                    <td><span class="status-pill status-pill--online">Online</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="td-device">
-                                        <span class="device-icon desktop">PC</span>
-                                        <strong>PC Laboratório 02</strong>
-                                    </td>
-                                    <td class="font-monospace">192.168.1.56</td>
-                                    <td>Desktop</td>
-                                    <td>Windows 11 Pro</td>
-                                    <td>
-                                        <div class="inline-meter"><span style="width: 34%;"></span></div>
-                                        <span class="small">33.5%</span>
-                                    </td>
-                                    <td>
-                                        <div class="inline-meter inline-meter--green"><span style="width: 51%;"></span></div>
-                                        <span class="small">51.4%</span>
-                                    </td>
-                                    <td><span class="status-pill status-pill--online">Online</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="td-device">
-                                        <span class="device-icon laptop">NB</span>
-                                        <strong>Notebook Professor</strong>
-                                    </td>
-                                    <td class="font-monospace">192.168.1.112</td>
-                                    <td>Notebook</td>
-                                    <td>macOS Sonoma</td>
-                                    <td>
-                                        <div class="inline-meter"><span style="width: 18%;"></span></div>
-                                        <span class="small">18.1%</span>
-                                    </td>
-                                    <td>
-                                        <div class="inline-meter inline-meter--green"><span style="width: 54%;"></span></div>
-                                        <span class="small">54.2%</span>
-                                    </td>
-                                    <td><span class="status-pill status-pill--online">Online</span></td>
-                                </tr>
-                                <tr class="row-offline">
-                                    <td class="td-device">
-                                        <span class="device-icon desktop">PC</span>
-                                        <strong>PC Secretaria</strong>
-                                    </td>
-                                    <td class="font-monospace">192.168.1.60</td>
-                                    <td>Desktop</td>
-                                    <td>Windows 10</td>
-                                    <td><span class="small text-secondary">—</span></td>
-                                    <td><span class="small text-secondary">—</span></td>
-                                    <td><span class="status-pill status-pill--offline">Offline</span></td>
-                                </tr>
+                            <tbody id="tabela-dispositivos">
+                                <!-- preenchido via JS -->
                             </tbody>
                         </table>
                     </div>
@@ -224,6 +123,57 @@
             </main>
         </div>
     </div>
+
+    <script>
+        async function carregarDados() {
+            const res = await fetch('db.json');
+            const db = await res.json();
+
+            // Usuário
+            document.getElementById('user-iniciais').textContent = db.usuario.iniciais;
+            document.getElementById('user-nome').textContent = db.usuario.nome;
+            document.getElementById('user-papel').textContent = db.usuario.papel;
+
+            // Tabela de dispositivos
+            const tbody = document.getElementById('tabela-dispositivos');
+            db.dispositivos.forEach(d => {
+                const isOffline = d.status === 'offline';
+                const iconeClass = ['device-icon', d.tipo_icone !== 'servidor' ? d.tipo_icone : '']
+                    .filter(Boolean).join(' ');
+
+                const cpuCell = isOffline
+                    ? `<span class="small text-secondary">—</span>`
+                    : `<div class="inline-meter"><span style="width: ${Math.round(d.cpu)}%;"></span></div>
+                       <span class="small">${d.cpu}%</span>`;
+
+                const ramCell = isOffline
+                    ? `<span class="small text-secondary">—</span>`
+                    : `<div class="inline-meter inline-meter--green"><span style="width: ${Math.round(d.ram)}%;"></span></div>
+                       <span class="small">${d.ram}%</span>`;
+
+                const statusLabel = d.status === 'online' ? 'Online' : 'Offline';
+                const statusClass = d.status === 'online'
+                    ? 'status-pill status-pill--online'
+                    : 'status-pill status-pill--offline';
+
+                tbody.innerHTML += `
+                <tr${isOffline ? ' class="row-offline"' : ''}>
+                    <td class="td-device">
+                        <span class="${iconeClass}">${d.icone}</span>
+                        <strong>${d.nome}</strong>
+                    </td>
+                    <td class="font-monospace">${d.ip}</td>
+                    <td>${d.tipo}</td>
+                    <td>${d.sistema}</td>
+                    <td>${cpuCell}</td>
+                    <td>${ramCell}</td>
+                    <td><span class="${statusClass}">${statusLabel}</span></td>
+                </tr>`;
+            });
+        }
+
+        carregarDados();
+    </script>
 </body>
 
 </html>

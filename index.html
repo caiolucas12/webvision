@@ -55,10 +55,10 @@
 
             <div class="sidebar-footer">
                 <div class="sidebar-user">
-                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-avatar" id="user-iniciais"></div>
                     <div class="sidebar-user-info">
-                        <span class="sidebar-user-name">Admin</span>
-                        <span class="sidebar-user-role">Administrador</span>
+                        <span class="sidebar-user-name" id="user-nome"></span>
+                        <span class="sidebar-user-role" id="user-papel"></span>
                     </div>
                 </div>
                 <a href="login.html" class="sidebar-logout">Sair</a>
@@ -75,7 +75,7 @@
                 <div class="topbar-right">
                     <span class="status-badge status-badge--success">
                         <span class="status-badge-dot"></span>
-                        5 máquinas ativas
+                        <span id="badge-dispositivos-online"></span>
                     </span>
                     <span class="header-note">Modo demonstração</span>
                 </div>
@@ -88,28 +88,28 @@
                         <div class="kpi-icon kpi-icon--blue">&#8645;</div>
                         <div class="kpi-body">
                             <span class="kpi-label">Dispositivos Online</span>
-                            <strong class="kpi-value">5 / 5</strong>
+                            <strong class="kpi-value" id="kpi-dispositivos"></strong>
                         </div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-icon kpi-icon--green">&#8593;</div>
                         <div class="kpi-body">
                             <span class="kpi-label">Uptime Médio</span>
-                            <strong class="kpi-value">99.7%</strong>
+                            <strong class="kpi-value" id="kpi-uptime"></strong>
                         </div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-icon kpi-icon--yellow">&#9888;</div>
                         <div class="kpi-body">
                             <span class="kpi-label">Alertas Ativos</span>
-                            <strong class="kpi-value">2</strong>
+                            <strong class="kpi-value" id="kpi-alertas"></strong>
                         </div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-icon kpi-icon--purple">&#9201;</div>
                         <div class="kpi-body">
                             <span class="kpi-label">Latência Média</span>
-                            <strong class="kpi-value">12ms</strong>
+                            <strong class="kpi-value" id="kpi-latencia"></strong>
                         </div>
                     </div>
                 </section>
@@ -137,55 +137,8 @@
                             <a href="dispositivos.html" class="panel-link">Ver todos</a>
                         </div>
                         <div class="panel-body">
-                            <div class="device-list">
-                                <article class="device-card selected">
-                                    <div class="device-heading">
-                                        <span class="device-icon">SV</span>
-                                        <div>
-                                            <h3>Servidor Principal</h3>
-                                            <p>192.168.1.100</p>
-                                        </div>
-                                        <span class="status-dot"></span>
-                                    </div>
-                                    <div class="metric"><span>CPU</span><strong>34.8%</strong></div>
-                                    <div class="meter"><span style="width: 35%;"></span></div>
-                                </article>
-                                <article class="device-card">
-                                    <div class="device-heading">
-                                        <span class="device-icon database">DB</span>
-                                        <div>
-                                            <h3>Banco de Dados</h3>
-                                            <p>192.168.1.101</p>
-                                        </div>
-                                        <span class="status-dot"></span>
-                                    </div>
-                                    <div class="metric"><span>CPU</span><strong>28.4%</strong></div>
-                                    <div class="meter"><span style="width: 28%;"></span></div>
-                                </article>
-                                <article class="device-card">
-                                    <div class="device-heading">
-                                        <span class="device-icon desktop">PC</span>
-                                        <div>
-                                            <h3>PC Laboratório 01</h3>
-                                            <p>192.168.1.55</p>
-                                        </div>
-                                        <span class="status-dot"></span>
-                                    </div>
-                                    <div class="metric"><span>CPU</span><strong>39.9%</strong></div>
-                                    <div class="meter"><span style="width: 40%;"></span></div>
-                                </article>
-                                <article class="device-card">
-                                    <div class="device-heading">
-                                        <span class="device-icon laptop">NB</span>
-                                        <div>
-                                            <h3>Notebook Professor</h3>
-                                            <p>192.168.1.112</p>
-                                        </div>
-                                        <span class="status-dot"></span>
-                                    </div>
-                                    <div class="metric"><span>CPU</span><strong>18.1%</strong></div>
-                                    <div class="meter"><span style="width: 18%;"></span></div>
-                                </article>
+                            <div class="device-list" id="device-list">
+                                <!-- preenchido via JS -->
                             </div>
                         </div>
                     </section>
@@ -207,25 +160,8 @@
                                     <th>Horário</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="severity severity--warning">Aviso</span></td>
-                                    <td>Banco de Dados</td>
-                                    <td>Uso de RAM acima de 65%</td>
-                                    <td>14:32</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="severity severity--critical">Crítico</span></td>
-                                    <td>PC Laboratório 01</td>
-                                    <td>Temperatura elevada detectada</td>
-                                    <td>13:47</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="severity severity--info">Info</span></td>
-                                    <td>Servidor Principal</td>
-                                    <td>Backup automático concluído</td>
-                                    <td>12:00</td>
-                                </tr>
+                            <tbody id="alertas-recentes">
+                                <!-- preenchido via JS -->
                             </tbody>
                         </table>
                     </div>
@@ -233,6 +169,63 @@
             </main>
         </div>
     </div>
+
+    <script>
+        async function carregarDados() {
+            const res = await fetch('db.json');
+            const db = await res.json();
+
+            // Usuário
+            document.getElementById('user-iniciais').textContent = db.usuario.iniciais;
+            document.getElementById('user-nome').textContent = db.usuario.nome;
+            document.getElementById('user-papel').textContent = db.usuario.papel;
+
+            // KPIs
+            document.getElementById('badge-dispositivos-online').textContent =
+                `${db.kpis.dispositivosOnline} máquinas ativas`;
+            document.getElementById('kpi-dispositivos').textContent =
+                `${db.kpis.dispositivosOnline} / ${db.kpis.dispositivosTotal}`;
+            document.getElementById('kpi-uptime').textContent = db.kpis.uptimeMedio;
+            document.getElementById('kpi-alertas').textContent = db.kpis.alertasAtivos;
+            document.getElementById('kpi-latencia').textContent = db.kpis.latenciaMedia;
+
+            // Dispositivos (apenas os online, máx. 4 cards)
+            const deviceList = document.getElementById('device-list');
+            const online = db.dispositivos.filter(d => d.status === 'online').slice(0, 4);
+            online.forEach((d, i) => {
+                const selected = i === 0 ? 'selected' : '';
+                const iconeClass = `device-icon ${d.tipo_icone !== 'servidor' ? d.tipo_icone : ''}`.trim();
+                deviceList.innerHTML += `
+                <article class="device-card ${selected}">
+                    <div class="device-heading">
+                        <span class="${iconeClass}">${d.icone}</span>
+                        <div>
+                            <h3>${d.nome}</h3>
+                            <p>${d.ip}</p>
+                        </div>
+                        <span class="status-dot"></span>
+                    </div>
+                    <div class="metric"><span>CPU</span><strong>${d.cpu}%</strong></div>
+                    <div class="meter"><span style="width: ${Math.round(d.cpu)}%;"></span></div>
+                </article>`;
+            });
+
+            // Alertas recentes (máx. 3)
+            const tbody = document.getElementById('alertas-recentes');
+            db.alertas.slice(0, 3).forEach(a => {
+                const horario = a.horario.replace('Hoje, ', '').replace('Ontem, ', '');
+                tbody.innerHTML += `
+                <tr>
+                    <td><span class="severity severity--${a.severidade}">${a.severidade_label}</span></td>
+                    <td>${a.dispositivo}</td>
+                    <td>${a.titulo}</td>
+                    <td>${horario}</td>
+                </tr>`;
+            });
+        }
+
+        carregarDados();
+    </script>
 </body>
 
 </html>
